@@ -199,8 +199,8 @@
       let result;
 
       function appendToDisplay(value) {
-        if (screen.innerText === "TRON") screen.innerText = value;
-        else screen.innerText += value;
+        if ( document.getElementById("screen").innerText === "TRON") screen.innerText = value;
+        else  document.getElementById("screen").innerText += value;
       }
 
       function calculateResult() {
