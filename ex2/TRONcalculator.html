@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic HTML with JavaScript</title>
+
+    <style>
+      /* Embedded style for the dynamically created paragraph */
+      #screen {
+        border: 1px solid #193f4a;
+        background-color: #7dfdfe;
+        width: 500px;
+        min-height: 70px;
+        margin: auto;
+        font-size: 60px;
+        text-align: center;
+        margin-block-start: 100px;
+        transition: box-shadow 0.3s ease-in-out;
+        box-shadow: 0 0 0 0 #7dfdfe; /* Initial box-shadow with zero glow */
+
+        white-space: nowrap; /* Prevent text from wrapping to the next line */
+        overflow: hidden; /* Hide any content that overflows the specified width */
+        text-overflow: ellipsis; /* Display an ellipsis (...) to indicate truncated text */
+      }
+      #keys {
+        border: 1px solid blue;
+        width: 500px;
+        min-height: 450px;
+        padding: 10px;
+        margin: 20px auto;
+        justify-content: center;
+      }
+
+      button {
+        background-color: #7dfdfe;
+        width: 100px;
+        padding: 10px;
+        margin: 20px auto;
+        font-family: "TronLegacy"; /* Add this line to set the font-family for buttons */
+        font-size: 50px;
+        float: left;
+        transition: box-shadow 0.3s ease-in-out;
+      }
+
+      button:hover {
+        box-shadow: 0 0 20px 10px #2f8ca3;
+      }
+
+      @font-face {
+        font-family: "TronLegacy";
+        src: url("TronBoldInline.ttf") format("truetype"); /* Specify the path to your TTF file */
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      document.body.style.backgroundImage =
+        "url('Tron-Legacy-Cityscape-Tron-night-sky-nature.jpg')";
+      document.body.style.fontFamily = "TronLegacy";
+      var calculator = document.createElement("div");
+
+      var screen = document.createElement("div");
+      screen.id = "screen"; // set the id attribute
+      // Create some text content for the paragraph
+      screen.innerText = "TRON"; // set initial text content
+
+      calculator.appendChild(screen);
+
+      var keys = document.createElement("div");
+      keys.id = "keys"; // set the id attribute
+
+      // Create a floating div
+      var MCButton = document.createElement("button");
+      MCButton.className = "button";
+      MCButton.textContent = "MC";
+      MCButton.onclick = function () {
+        M = 0;
+      };
+      keys.appendChild(MCButton);
+
+      var MRButton = document.createElement("button");
+      MRButton.className = "button";
+      MRButton.textContent = "MR";
+      MRButton.onclick = calculateMemory;
+      keys.appendChild(MRButton);
+
+      var MplusButton = document.createElement("button");
+      MplusButton.className = "button";
+      MplusButton.textContent = "M+";
+      MplusButton.onclick = function () {
+        M += parseFloat(document.getElementById("screen").innerText);
+        console.log(M);
+      };
+      keys.appendChild(MplusButton);
+
+      var MminusButton = document.createElement("button");
+      MminusButton.className = "button";
+      MminusButton.textContent = "M-";
+      MminusButton.onclick = function () {
+        M -= parseFloat(document.getElementById("screen").innerText);
+      };
+      keys.appendChild(MminusButton);
+
+      var MSButton = document.createElement("button");
+      MSButton.className = "button";
+      MSButton.textContent = "MS";
+      MSButton.onclick = function () {
+        M = parseFloat(document.getElementById("screen").innerText);
+      };
+      keys.appendChild(MSButton);
+
+      var secondButton = document.createElement("button");
+      secondButton.className = "button";
+      secondButton.textContent = "2ND";
+      MSButton.onclick = function () {};
+      keys.appendChild(secondButton);
+
+      var piButton = document.createElement("button");
+      piButton.className = "button";
+      piButton.textContent = "pi";
+      piButton.onclick = function () {
+        appendToDisplay(3.14);
+      };
+      keys.appendChild(piButton);
+
+      var eulerButton = document.createElement("button");
+      eulerButton.className = "button";
+      eulerButton.textContent = "e";
+      eulerButton.onclick = function () {
+        appendToDisplay(2.718);
+      };
+      keys.appendChild(eulerButton);
+
+      var clearButton = document.createElement("button");
+      clearButton.className = "button";
+      clearButton.textContent = "c";
+      clearButton.onclick = function () {
+        document.getElementById("screen").innerText = "";
+      };
+      keys.appendChild(clearButton);
+
+      var deleteButton = document.createElement("button");
+      deleteButton.className = "button";
+      deleteButton.textContent = "del";
+      deleteButton.onclick = function () {
+        var screenContent = document.getElementById("screen").innerText;
+        screenContent = screenContent.slice(0, -1);
+        document.getElementById("screen").innerText = screenContent;
+      };
+
+      keys.appendChild(deleteButton);
+
+      for (var i = 1; i <= 9; i++) {
+        var button = document.createElement("button");
+        button.className = "button";
+        button.textContent = i;
+        button.onclick = function () {
+          appendToDisplay(this.textContent);
+        };
+        keys.appendChild(button);
+      }
+
+      // Create operator buttons
+      var operators = ["+", "-", "*", "/"];
+
+      for (var i = 0; i < operators.length; i++) {
+        var operatorButton = document.createElement("button");
+        operatorButton.className = "button";
+        operatorButton.textContent = operators[i];
+        operatorButton.onclick = function () {
+          appendToDisplay(this.textContent);
+        };
+        keys.appendChild(operatorButton);
+      }
+
+      // Create zero button
+      var zeroButton = document.createElement("button");
+      zeroButton.className = "button";
+      zeroButton.textContent = "0";
+      zeroButton.onclick = function () {
+        appendToDisplay("0");
+      };
+      keys.appendChild(zeroButton);
+
+      // Create equals button
+      var equalsButton = document.createElement("button");
+      equalsButton.className = "button";
+      equalsButton.textContent = "=";
+      equalsButton.onclick = calculateResult;
+      keys.appendChild(equalsButton);
+
+      calculator.appendChild(keys);
+
+      // Append the paragraph element to the body of the document
+      document.body.appendChild(calculator);
+
+      let M = 0;
+      let result;
+
+      function appendToDisplay(value) {
+        if (screen.innerText === "TRON") screen.innerText = value;
+        else screen.innerText += value;
+      }
+
+      function calculateResult() {
+        var screenContent = document.getElementById("screen").innerText;
+        document.getElementById("screen").style.boxShadow =
+          "0 0 20px 10px #7dfdfe";
+
+        try {
+          result = eval(screenContent);
+          document.getElementById("screen").innerText = result;
+        } catch (error) {
+          document.getElementById("screen").innerText = "Error";
+        }
+        setTimeout(function () {
+          document.getElementById("screen").style.boxShadow = "0 0 0 0 #2f8ca3";
+        }, 250);
+      }
+
+      function calculateMemory() {
+        document.getElementById("screen").style.boxShadow =
+          "0 0 20px 10px #7dfdfe";
+        try {
+          var screenContent = document.getElementById("screen").innerText + M;
+          result = parseFloat(eval(screenContent));
+          document.getElementById("screen").innerText = "";
+          document.getElementById("screen").innerText = result;
+        } catch (error) {
+          document.getElementById("screen").innerText = "Error";
+        }
+        setTimeout(function () {
+          document.getElementById("screen").style.boxShadow = "0 0 0 0 #2f8ca3";
+        }, 250);
+      }
+
+      function clearMemory() {}
+    </script>
+  </body>
+</html>
