@@ -113,7 +113,7 @@
       var secondButton = document.createElement("button");
       secondButton.className = "button";
       secondButton.textContent = "2ND";
-      MSButton.onclick = function () {};
+      secondButton.onclick = function () {};
       keys.appendChild(secondButton);
 
       var piButton = document.createElement("button");
@@ -220,19 +220,13 @@
       }
 
       function calculateMemory() {
-        document.getElementById("screen").style.boxShadow =
-          "0 0 20px 10px #7dfdfe";
+        var screenContent = document.getElementById("screen").innerText + M;
         try {
-          var screenContent = document.getElementById("screen").innerText + M;
           result = parseFloat(eval(screenContent));
-          document.getElementById("screen").innerText = "";
           document.getElementById("screen").innerText = result;
         } catch (error) {
           document.getElementById("screen").innerText = "Error";
         }
-        setTimeout(function () {
-          document.getElementById("screen").style.boxShadow = "0 0 0 0 #2f8ca3";
-        }, 250);
       }
 
       function clearMemory() {}
