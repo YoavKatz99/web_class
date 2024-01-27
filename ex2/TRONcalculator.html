@@ -62,7 +62,7 @@
       @font-face {
         font-family: "TronLegacy";
         src: url("TronBoldInline.ttf") format("truetype");
-      } 
+      }
     </style>
   </head>
   <body>
@@ -167,8 +167,9 @@
 
       var sqrtButton = createScientificButton("sqrt", "sqrt");
       sqrtButton.onclick = function () {
-          document.getElementById("screen").innerText = Math.sqrt(document.getElementById("screen").innerText)
-        ;
+        document.getElementById("screen").innerText = Math.sqrt(
+          document.getElementById("screen").innerText
+        );
       };
       keys.appendChild(sqrtButton);
 
@@ -180,19 +181,25 @@
 
       var sinButton = createScientificButton("sin", "sin");
       sinButton.onclick = function () {
-        document.getElementById("screen").innerText = Math.sin(document.getElementById("screen").innerText);
+        document.getElementById("screen").innerText = Math.sin(
+          document.getElementById("screen").innerText
+        );
       };
       keys.appendChild(sinButton);
 
       var cosButton = createScientificButton("cos", "cos");
       cosButton.onclick = function () {
-        document.getElementById("screen").innerText = Math.cos(document.getElementById("screen").innerText);
+        document.getElementById("screen").innerText = Math.cos(
+          document.getElementById("screen").innerText
+        );
       };
       keys.appendChild(cosButton);
 
       var tanButton = createScientificButton("tan", "tan");
       tanButton.onclick = function () {
-        document.getElementById("screen").innerText = Math.tan(document.getElementById("screen").innerText);
+        document.getElementById("screen").innerText = Math.tan(
+          document.getElementById("screen").innerText
+        );
       };
       keys.appendChild(tanButton);
 
