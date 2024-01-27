@@ -6,58 +6,73 @@
     <title>Dynamic HTML with JavaScript</title>
 
     <style>
-      /* Embedded style for the dynamically created paragraph */
       #screen {
         border: 1px solid #193f4a;
-        background-color: #7dfdfe;
-        width: 500px;
-        min-height: 70px;
-        margin: auto;
-        font-size: 60px;
+        background-color: rgba(
+          125,
+          253,
+          254,
+          0.3
+        ); /* Increased transparency (lower alpha value) */
+        /*background-color: #7dfdfe;*/
+        width: 450px;
+        margin: 30px auto;
+        min-height: 52px;
+        font-size: 50px;
         text-align: center;
-        margin-block-start: 100px;
         transition: box-shadow 0.3s ease-in-out;
         box-shadow: 0 0 0 0 #7dfdfe; /* Initial box-shadow with zero glow */
-
+        backdrop-filter: blur(10px);
         white-space: nowrap; /* Prevent text from wrapping to the next line */
         overflow: hidden; /* Hide any content that overflows the specified width */
         text-overflow: ellipsis; /* Display an ellipsis (...) to indicate truncated text */
       }
       #keys {
         border: 1px solid blue;
-        width: 500px;
-        min-height: 575px;
+        width: 430px;
+        min-height: 240px;
         padding: 10px;
-        margin: 20px auto;
-        justify-content: center;
+        margin: 10px auto;
       }
 
       button {
-        background-color: #7dfdfe;
-        width: 100px;
-        padding: 10px;
-        margin: 20px auto;
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.5
+        ); /* Increased transparency (lower alpha value) */
+        /*background-color: #7dfdfe;*/
+        border-color: white;
+        border-radius: 50px;
+        width: 85px;
+        margin: 1px auto;
+        padding: 1px;
         font-family: "TronLegacy"; /* Add this line to set the font-family for buttons */
-        font-size: 50px;
+        font-size: 30px;
         float: left;
         transition: box-shadow 0.3s ease-in-out;
+        backdrop-filter: blur(10px);
       }
 
       button:hover {
-        box-shadow: 0 0 20px 10px #2f8ca3;
+        box-shadow: 0 0 20px 10px white;
       }
 
       @font-face {
         font-family: "TronLegacy";
-        src: url("TronBoldInline.ttf") format("truetype"); /* Specify the path to your TTF file */
-      }
+        src: url("TronBoldInline.ttf") format("truetype");
+      } 
     </style>
   </head>
   <body>
     <script>
       document.body.style.backgroundImage =
         "url('Tron-Legacy-Cityscape-Tron-night-sky-nature.jpg')";
+      document.body.style.backgroundSize = "100%";
+      document.body.style.color = "white";
       document.body.style.fontFamily = "TronLegacy";
+
       var calculator = document.createElement("div");
 
       var screen = document.createElement("div");
@@ -126,7 +141,7 @@
 
       var eulerButton = document.createElement("button");
       eulerButton.className = "button";
-      eulerButton.textContent = "e";
+      eulerButton.textContent = "eu";
       eulerButton.onclick = function () {
         appendToDisplay(2.718);
       };
@@ -148,8 +163,38 @@
         screenContent = screenContent.slice(0, -1);
         document.getElementById("screen").innerText = screenContent;
       };
-
       keys.appendChild(deleteButton);
+
+      var sqrtButton = createScientificButton("sqrt", "sqrt");
+      sqrtButton.onclick = function () {
+          document.getElementById("screen").innerText = Math.sqrt(document.getElementById("screen").innerText)
+        ;
+      };
+      keys.appendChild(sqrtButton);
+
+      var powerButton = createScientificButton("power", "pow");
+      powerButton.onclick = function () {
+        appendToDisplay("**");
+      };
+      keys.appendChild(powerButton);
+
+      var sinButton = createScientificButton("sin", "sin");
+      sinButton.onclick = function () {
+        document.getElementById("screen").innerText = Math.sin(document.getElementById("screen").innerText);
+      };
+      keys.appendChild(sinButton);
+
+      var cosButton = createScientificButton("cos", "cos");
+      cosButton.onclick = function () {
+        document.getElementById("screen").innerText = Math.cos(document.getElementById("screen").innerText);
+      };
+      keys.appendChild(cosButton);
+
+      var tanButton = createScientificButton("tan", "tan");
+      tanButton.onclick = function () {
+        document.getElementById("screen").innerText = Math.tan(document.getElementById("screen").innerText);
+      };
+      keys.appendChild(tanButton);
 
       for (var i = 1; i <= 9; i++) {
         var button = document.createElement("button");
@@ -189,18 +234,19 @@
       equalsButton.textContent = "=";
       equalsButton.onclick = calculateResult;
       keys.appendChild(equalsButton);
+      var buttons = document.querySelectorAll(".button-text");
 
       calculator.appendChild(keys);
 
-      // Append the paragraph element to the body of the document
       document.body.appendChild(calculator);
 
       let M = 0;
       let result;
 
       function appendToDisplay(value) {
-        if ( document.getElementById("screen").innerText === "TRON") screen.innerText = value;
-        else  document.getElementById("screen").innerText += value;
+        if (document.getElementById("screen").innerText === "TRON")
+          screen.innerText = value;
+        else document.getElementById("screen").innerText += value;
       }
 
       function calculateResult() {
@@ -227,6 +273,13 @@
         } catch (error) {
           document.getElementById("screen").innerText = "Error";
         }
+      }
+
+      function createScientificButton(className, textContent) {
+        var button = document.createElement("button");
+        button.className = "button scientific";
+        button.textContent = textContent;
+        return button;
       }
 
       function clearMemory() {}
