@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="galleryApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<style>
+    #app {
+        max-width: 400px; /* adjust as needed */
+        align-self: center;
+        width: 600px;
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    #thumbnails {
+        text-align: center;
+    }
+
+    #thumbnails img {
+        height: 40px;
+        border: 2px solid white;
+        cursor: pointer;
+    }
+
+    .selectedCar,
+    .selectedCar:hover {
+        border-color: red !important;
+    }
+
+    #thumbnails img:hover {
+        border: 2px solid yellow;
+    }
+
+    #selectedImage {
+        width: 100%;
+
+    }
+</style>
+<body>
+<div id="app" ng-controller="GalleryController">
+    <div id="thumbnails">
+        <img ng-src="{{getImageUrl($index)}}" ng-class="{ 'selectedCar': $index === selectedIndex }" ng-click="select($index)" ng-repeat="pic in pics track by $index">
+    </div>
+    <img id="selectedImage" ng-src="{{getImageUrl(selectedIndex)}}" />
+
+</div>
+
+<script>
+    angular.module('galleryApp', [])
+        .controller('GalleryController', function ($scope, $interval) {
+            $scope.pics = [1, 2, 3, 4, 5, 6];
+            $scope.selectedIndex = 0;
+
+            $scope.select = function (n) {
+                $scope.selectedIndex = n;
+            };
+
+            $scope.getImageUrl = function (index) {
+                return 'https://picsum.photos/200/300?random=' + index;
+            };
+
+            $interval(function () {
+                let m = $scope.selectedIndex === $scope.pics.length - 1 ? 0 : $scope.selectedIndex + 1;
+                $scope.select(m);
+            }, 2000);
+        });
+</script>
+</body>
+</html>
