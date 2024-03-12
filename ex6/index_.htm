@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .thumbnail-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        const url =
+            "https://dummyjson.com/products?limit=100&skip=0&select=thumbnail,title,description,price";
+        const opt = {
+            mode: "cors",
+        };
+
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        $(document).ready(() => {
+            fetchData();
+        });
+
+        const fetchData = () => {
+            fetch(url, opt)
+                .then((response) => response.json())
+                .then((data) => {
+                    createTable(data);
+                })
+                .catch((error) => console.log(error));
+        };
+
+        const createTableHeader = () => {
+            const headers = ["image", "title", "description", "price"];
+            const tr = $("<tr/>");
+            headers.forEach((header) => {
+                tr.append($(`<th class="px-4 py-2">${header}</th>`));
+            });
+            return tr;
+        };
+
+        const createRow = (product) => {
+            const {thumbnail, title, description, price} = product;
+            const tr = $("<tr/>");
+            tr.append($(`<td class="px-4 py-2"><img src="${thumbnail}" alt="${title}" class="thumbnail-img"></td>`));
+            tr.append($(`<td class="px-4 py-2">${title}</td>`));
+            tr.append($(`<td class="px-4 py-2">${description}</td>`));
+            tr.append($(`<td class="px-4 py-2">${price}</td>`));
+            return tr;
+        };
+
+        const createTable = (data) => {
+            const products = data.products.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+            const container = $("#myTable");
+            container.empty();
+
+            const table = $("<table/>").addClass(
+                "table-auto border-collapse border border-gray-500 bg-white mx-auto w-full lg:w-3/4"
+            );
+
+            const trh = createTableHeader();
+            table.append(trh);
+
+            products.forEach((product) => {
+                const tr = createRow(product);
+                table.append(tr);
+            });
+
+            $("#myTable").append(table);
+
+            renderPagination(data.products.length);
+        };
+
+        const renderPagination = (totalItems) => {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const paginationContainer = $("#pagination");
+            paginationContainer.empty();
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = $(`<button class="px-4 py-2 rounded-md border border-gray-400 bg-white hover:bg-gray-200">${i}</button>`);
+                pageLink.click(() => {
+                    currentPage = i;
+                    fetchData();
+                });
+                paginationContainer.append(pageLink);
+            }
+        };
+    </script>
+</head>
+<body class="p-4 bg-gray-100">
+<div class="container mx-auto">
+    <div id="myTable" class="mb-4"></div>
+    <div id="pagination" class="mt-4 flex justify-center"></div>
+</div>
+</body>
+</html>
